@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework import permissions
 from api.serializers import UserSerializer, GroupSerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -9,7 +9,8 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.contrib.auth.forms import AuthenticationForm
-from rest_framework import status
+from django.contrib.auth import login, logout
+
 
 # Create your views here.
 class UserViewSet(viewsets.ModelViewSet):
@@ -30,18 +31,14 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 
-@api_view(['POST', 'GET'])
-def login(request):
-    content = {
-        'user': str(request.user),  # `django.contrib.auth.User` instance.
-        'auth': str(request.auth),  # None
-    }
-    if request.method == "POST":
-        user = request.user
-        login(request, user)
-        content['message'] = 'User is loggedIN'
-        return Response(content, status=status.HTTP_200_OK)
-    return Response(content, status=status.HTTP_403_FORBIDDEN)
+@api_view(['POST'])
+def login_view(request):
+    login(request, request.user)
+    return Response({
+        'user': str(request.user),
+        'message': 'User is loggedIn'
+    }, status=status.HTTP_200_OK)
+    
  
 def logout(request):
     pass
