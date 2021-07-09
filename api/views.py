@@ -1,3 +1,4 @@
+from django.core.checks import messages
 import api
 from codecs import register
 from django.shortcuts import render
@@ -41,16 +42,16 @@ class GroupViewSet(viewsets.ModelViewSet):
 def login_view(request):
     user = str(request.user)
     logged_user = User.objects.get(username=user)
-    logged_user.is_active = True
-    logged_user.save()
     return Response({
         'username': logged_user.get_username(),
         'loggedIn': logged_user.is_active
     }, status=status.HTTP_200_OK)
-   
+
+
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def logout_view(request):
+    code_str = """
     user = str(request.user)
     logged_user = User.objects.get(username=user)
     logged_user.is_active = False
@@ -58,6 +59,12 @@ def logout_view(request):
     return Response({
         'message': "User is logged out"
     }, status=status.HTTP_200_OK)
+    """
+
+    return Response({
+        'code': code_str,
+        'message': 'Basic auth is not designed to logout by default'
+    }, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class RegisterView(generics.CreateAPIView):
@@ -74,7 +81,6 @@ class RegisterView(generics.CreateAPIView):
 
         register_serializer = RegistrationSerializer(data=request.data)
         if register_serializer.is_valid():
-            register_serializer.is_active = False
             register_serializer.save()
             return Response(
                 {
@@ -100,5 +106,6 @@ def profile(request):
         return Response({
             'message': "User is unauthoriezed to access the information. Please login first"
         }, status=status.HTTP_401_UNAUTHORIZED)
+        
 def version(request):
     pass
