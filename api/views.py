@@ -33,17 +33,17 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 @api_view(['POST'])
 def login_view(request):
-    login(request, request.user)
+    # login(request, request.user)
     return Response({
         'user': str(request.user),
         'message': 'User is loggedIn'
     }, status=status.HTTP_200_OK)
-    
+   
  
-def logout(request):
+def logout_view(request):
     pass
 
-def register(request):
+def register_view(request):
     pass
 
 def profile(request):

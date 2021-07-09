@@ -5,8 +5,8 @@ app_name = 'api'
 
 urlpatterns = [
     path('login/', views.login_view, name="login"),
-    path('logout/', views.login, name="logout"),
-    path('register/', views.login, name="register"),
-    path('profile/', views.login, name="profile"),
-    path('version/', views.login, name="version"),
+    path('logout/', views.logout_view, name="logout"),
+    path('register/', views.register_view, name="register"),
+    path('profile/', views.profile, name="profile"),
+    path('version/', views.version, name="version"),
 ]
