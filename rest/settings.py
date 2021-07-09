@@ -82,6 +82,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rest.wsgi.application'
 
+DISABLE_COLLECTSTATIC=1
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
