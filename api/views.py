@@ -1,3 +1,4 @@
+import api
 from codecs import register
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
@@ -47,10 +48,16 @@ def login_view(request):
         'loggedIn': logged_user.is_active
     }, status=status.HTTP_200_OK)
    
- 
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
 def logout_view(request):
-    pass
-
+    user = str(request.user)
+    logged_user = User.objects.get(username=user)
+    logged_user.is_active = False
+    logged_user.save()
+    return Response({
+        'message': "User is logged out"
+    }, status=status.HTTP_200_OK)
 
 
 class RegisterView(generics.CreateAPIView):
