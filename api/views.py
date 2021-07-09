@@ -1,15 +1,19 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
-from rest_framework import status, viewsets
+from rest_framework import generics, status, viewsets
 from rest_framework import permissions
+from rest_framework.utils.serializer_helpers import JSONBoundField
 from api.serializers import UserSerializer, GroupSerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from django.http import HttpResponse
 from rest_framework.authentication import BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
+from rest_framework.parsers import JSONParser
+from .serializers import RegistrationSerializer
+
 
 
 # Create your views here.
@@ -33,18 +37,20 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 @api_view(['POST'])
 def login_view(request):
-    # login(request, request.user)
-    return Response({
-        'user': str(request.user),
-        'message': 'User is loggedIn'
-    }, status=status.HTTP_200_OK)
+    logged_user = User.objects.get(username=str(request.user))
+    return Response(logged_user, status=status.HTTP_200_OK)
    
  
 def logout_view(request):
     pass
 
-def register_view(request):
-    pass
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes(AllowAny,)
+    serializer_class = RegistrationSerializer
+
 
 def profile(request):
     pass

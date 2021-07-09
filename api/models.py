@@ -11,4 +11,3 @@ class UserProfile(models.Model):
     ]
     name = CharField(max_length=10)
     status = models. IntegerField(choices=ACCOUNT_STATUS_CHOCIES)
-    
