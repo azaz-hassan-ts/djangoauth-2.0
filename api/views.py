@@ -42,8 +42,6 @@ def login_view(request):
     logged_user = User.objects.get(username=user)
     return Response({
         'username': logged_user.get_username(),
-        'full name': logged_user.get_full_name(),
-        'email': logged_user.email,
         'loggedIn': True
     }, status=status.HTTP_200_OK)
    
@@ -77,9 +75,20 @@ class RegisterView(generics.CreateAPIView):
             )
         return Response(register_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+@api_view(['GET'])
 def profile(request):
-    pass
-
+    user = str(request.user)
+    logged_user = User.objects.get(username=user)
+    if logged_user.is_active:
+        return Response({
+            'username': logged_user.get_username(),
+            'full name': logged_user.get_full_name(),
+            'email': logged_user.email,
+            'loggedIn': True
+        }, status=status.HTTP_200_OK)
+    else:
+        return Response({
+            'message': "User is unauthoriezed to access the information. Please login first"
+        }, status=status.HTTP_401_UNAUTHORIZED)
 def version(request):
     pass
