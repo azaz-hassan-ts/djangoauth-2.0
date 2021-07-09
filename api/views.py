@@ -40,9 +40,11 @@ class GroupViewSet(viewsets.ModelViewSet):
 def login_view(request):
     user = str(request.user)
     logged_user = User.objects.get(username=user)
+    logged_user.is_active = True
+    logged_user.save()
     return Response({
         'username': logged_user.get_username(),
-        'loggedIn': True
+        'loggedIn': logged_user.is_active
     }, status=status.HTTP_200_OK)
    
  
