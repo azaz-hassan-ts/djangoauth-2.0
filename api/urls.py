@@ -1,4 +1,5 @@
 from django.urls import path, include
+from django.urls.conf import re_path
 from . import views
 
 app_name = 'api'
@@ -8,5 +9,6 @@ urlpatterns = [
     path('logout/', views.logout_view, name="logout"),
     path('register/', views.RegisterView.as_view(), name="register"),
     path('profile/', views.profile, name="profile"),
-    path('version/', views.version, name="version"),
+    re_path('^$', views.version1, name="version1"),
+    re_path('^$', views.version2, name="version2"),
 ]

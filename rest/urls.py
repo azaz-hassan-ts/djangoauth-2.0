@@ -1,5 +1,6 @@
 from django.urls import path, include
 from django.contrib.auth.models import User
+from django.urls.conf import re_path
 from rest_framework import routers, serializers, viewsets
 from api import views
 from django.contrib import admin
@@ -27,5 +28,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path("admin/", admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api/', include('api.urls'))
+    path('api/', include('api.urls')),
+    re_path('^api/v1/',include("api.urls", namespace="v1")),
+    re_path('^api/v2/',include("api.urls", namespace="v2"))
 ]

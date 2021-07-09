@@ -106,6 +106,17 @@ def profile(request):
         return Response({
             'message': "User is unauthoriezed to access the information. Please login first"
         }, status=status.HTTP_401_UNAUTHORIZED)
-        
-def version(request):
-    pass
+
+@api_view(['GET'])
+@permission_classes((AllowAny, ))
+def version1(request):
+    return Response({
+        'version': request.version
+    }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes((AllowAny, ))
+def version2(request):
+    return Response({
+        'version': request.version
+    }, status=status.HTTP_200_OK)
