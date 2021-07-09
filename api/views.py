@@ -1,11 +1,12 @@
+from codecs import register
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
-from rest_framework import generics, status, viewsets
+from rest_framework import generics, serializers, status, viewsets
 from rest_framework import permissions
 from rest_framework.utils.serializer_helpers import JSONBoundField
 from api.serializers import UserSerializer, GroupSerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
@@ -37,8 +38,14 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 @api_view(['POST'])
 def login_view(request):
-    logged_user = User.objects.get(username=str(request.user))
-    return Response(logged_user, status=status.HTTP_200_OK)
+    user = str(request.user)
+    logged_user = User.objects.get(username=user)
+    return Response({
+        'username': logged_user.get_username(),
+        'full name': logged_user.get_full_name(),
+        'email': logged_user.email,
+        'loggedIn': True
+    }, status=status.HTTP_200_OK)
    
  
 def logout_view(request):
@@ -50,6 +57,25 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes(AllowAny,)
     serializer_class = RegistrationSerializer
+
+
+    def post(self, request, format=None):
+        if request.data == {}:
+            return Response({
+                'message': "Send request Body"
+            }, status=status.HTTP_204_NO_CONTENT) 
+
+        register_serializer = RegistrationSerializer(data=request.data)
+        if register_serializer.is_valid():
+            # register_serializer.save()
+            return Response(
+                {
+                    'data': register_serializer.data,
+                    'message': "You are succesfully registered" 
+                },
+                status=status.HTTP_201_CREATED
+            )
+        return Response(register_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 def profile(request):
