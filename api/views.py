@@ -67,7 +67,8 @@ class RegisterView(generics.CreateAPIView):
 
         register_serializer = RegistrationSerializer(data=request.data)
         if register_serializer.is_valid():
-            # register_serializer.save()
+            register_serializer.is_active = False
+            register_serializer.save()
             return Response(
                 {
                     'data': register_serializer.data,
