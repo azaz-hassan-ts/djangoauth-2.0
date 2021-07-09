@@ -3,7 +3,7 @@ import api
 from codecs import register
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
-from rest_framework import generics, serializers, status, viewsets
+from rest_framework import generics, serializers, status, viewsets, views
 from rest_framework import permissions
 from rest_framework.utils.serializer_helpers import JSONBoundField
 from api.serializers import UserSerializer, GroupSerializer
@@ -16,8 +16,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from rest_framework.parsers import JSONParser
 from .serializers import RegistrationSerializer
-
-
+from drf_yasg.utils import swagger_auto_schema 
+from drf_yasg import openapi
 
 # Create your views here.
 class UserViewSet(viewsets.ModelViewSet):
@@ -37,15 +37,19 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
+class LoginView(views.APIView):
+    queryset = User.objects.all()
+    permission_classes(IsAuthenticated,)
 
-@api_view(['POST'])
-def login_view(request):
-    user = str(request.user)
-    logged_user = User.objects.get(username=user)
-    return Response({
-        'username': logged_user.get_username(),
-        'loggedIn': logged_user.is_active
-    }, status=status.HTTP_200_OK)
+ 
+    def post(self, request, format=None):
+        user = str(request.user)
+        logged_user = User.objects.get(username=user)
+        return Response({
+            'username': logged_user.get_username(),
+            'loggedIn': logged_user.is_active
+        }, status=status.HTTP_200_OK)
+        
 
 
 @api_view(['POST'])

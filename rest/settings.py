@@ -52,6 +52,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+}
+
 ROOT_URLCONF = 'rest.urls'
 
 TEMPLATES = [

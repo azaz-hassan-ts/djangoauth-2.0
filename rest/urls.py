@@ -29,6 +29,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include('api.urls')),
-    re_path('^api/v1/',include("api.urls", namespace="v1")),
-    re_path('^api/v2/',include("api.urls", namespace="v2"))
+    re_path('^api/',include("api.urls", namespace="v1")),
+    re_path('^api/',include("api.urls", namespace="v2"))
 ]

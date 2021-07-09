@@ -22,12 +22,11 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('login/', views.login_view, name="login"),
+    path('login/', views.LoginView.as_view(), name="login"),
     path('logout/', views.logout_view, name="logout"),
     path('register/', views.RegisterView.as_view(), name="register"),
     path('profile/', views.profile, name="profile"),
-    re_path('^version$', views.version1, name="version1"),
-    re_path('^version$', views.version2, name="version2"),
+    re_path('v1/version', views.version1, name="version1"),
+    re_path('v2/version', views.version2, name="version2"),
     path(r'', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path(r'redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

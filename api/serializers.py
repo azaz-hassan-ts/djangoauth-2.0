@@ -3,6 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.db.models import fields
 from django.db.models.base import Model
 from rest_framework import serializers
+from rest_framework.fields import CharField
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
@@ -51,3 +52,4 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
