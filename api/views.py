@@ -44,6 +44,10 @@ class LoginView(views.APIView):
  
     def post(self, request, format=None):
         user = str(request.user)
+        if user == "AnonymousUser":
+            return Response({
+                'message': "This is not a authorized user"
+            }, status=status.HTTP_401_UNAUTHORIZED)
         logged_user = User.objects.get(username=user)
         return Response({
             'username': logged_user.get_username(),
@@ -98,6 +102,10 @@ class RegisterView(generics.CreateAPIView):
 @api_view(['GET'])
 def profile(request):
     user = str(request.user)
+    if user == "AnonymousUser":
+        return Response({
+            'message': "This is not a authorized user"
+        }, status=status.HTTP_401_UNAUTHORIZED)
     logged_user = User.objects.get(username=user)
     if logged_user.is_active:
         return Response({
