@@ -1,6 +1,6 @@
 # djangoauth-2.0
 
-## Deployed at https://basicauthdjango.herokuapp.com/
+## Deployed at https://restbasicauth.herokuapp.com/api/
 
 # Python: Getting Started
 
@@ -45,7 +45,7 @@ or
 
 ## Swagger Documentation Hits
 
-### Got to ## Deployed at https://basicauthdjango.herokuapp.com/api/ to see swagger spec document
+### Got to https://restbasicauth.herokuapp.com/api/ to see swagger spec document
 #### Note: Basic Auth is integrated in Swagger Spec document
 
 #### API HIT CYCLE:
